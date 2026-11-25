@@ -8,6 +8,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>School Info & News</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * { box-sizing: border-box; }
         body { margin: 0; font-family: Inter, system-ui, sans-serif; background: #fff; color: #111; font-size: 16px; font-weight: 500; line-height: 1.55; }
@@ -42,6 +43,9 @@
         .share { display: block; margin-top: 8px; background: #eafff1; color: #0a7a3b; text-align: center; padding: 10px; border-radius: 10px; border: 1px solid #b8e6c8; cursor: pointer; font-weight: 700; font-size: 14px; width: 100%; }
         .del { display: block; margin-top: 8px; background: #ffecec; color: #c00; text-align: center; padding: 10px; border-radius: 10px; border: 1px solid #ffcccc; cursor: pointer; font-weight: 700; font-size: 14px; width: 100%; }
         .loadmore { display: block; margin: 20px auto; padding: 12px 24px; border-radius: 999px; background: #0a7a3b; color: #fff; border: 0; font-weight: 800; font-size: 15px; cursor: pointer; }
+        .cvBtn { display: block; margin: 10px auto; padding: 12px 24px; border-radius: 999px; background: #0a7a3b; color: #fff; border: 0; font-weight: 800; font-size: 15px; cursor: pointer; width: 100%; }
+        .cvBtnGreen { background: #0a7a3b; }
+        .cvBtnBlack { background: #111; }
         .calc { background: #f8f8f8; padding: 14px; border-radius: 14px; margin: 12px 0; font-size: 15px; font-weight: 500; }
         .calc h3 { font-size: 20px; font-weight: 900; color: #000; }
         .calc input, .calc textarea { width: 100%; padding: 12px; margin: 6px 0; border-radius: 10px; border: 1px solid #ddd; font-size: 15px; font-weight: 500; }
@@ -124,8 +128,7 @@
     <div id="page-school">
         <div class="welcome">
             <h2>👋 Welcome to School Info!</h2>
-            <p>Free JAMB & WAEC Calculator, Past Questions, CV Maker, Results Guide & Latest School News. Tap any tool below to start </p>
-            
+            <p>Free JAMB & WAEC Calculator, Complete Past Questions, CV Maker, Results Guide & Latest School News. Tap any tool below to start - no login needed!</p>
         </div>
         <h2>School Tools - Free For You</h2>
         <div class="tools">
@@ -820,7 +823,9 @@
                 <h3>Education</h3><p>${school || "Not added"}</p>
                 <h3>Skills</h3><p>${skills || "Not added"}</p>
             </div>
-            <button class="loadmore" onclick="printCV()">Download / Print This CV Only (1 Page)</button>
+            <button class="cvBtn cvBtnGreen" onclick="downloadCVImage()">📸 Save CV as Picture to Gallery</button>
+            <button class="cvBtn cvBtnBlack" onclick="printCV()">Download / Print This CV as PDF</button>
+            <p style="font-size:13px;color:#666;text-align:center">Tap Picture button - it will download as image. Then check Gallery > Downloads to see it.</p>
         `;
         document.getElementById("cvPreview").scrollIntoView({ behavior: "smooth" });
     }
@@ -831,6 +836,24 @@
         w.document.write(`<html><head><title>CV</title><style>body{font-family:Arial,sans-serif;padding:20px;color:#111;font-size:15px;font-weight:500}.cvPaper h1{font-size:26px;text-transform:uppercase;margin:0}.cvTitle{color:#0a7a3b;font-weight:800;margin:6px 0}.cvContact{border-bottom:3px solid #0a7a3b;padding-bottom:10px;margin-bottom:15px}h3{color:#0a7a3b;text-transform:uppercase;font-size:15px;border-bottom:1px solid #ddd;padding-bottom:4px}p{white-space:pre-wrap;line-height:1.6}</style></head><body>${cvHtml}</body></html>`);
         w.document.close();
         setTimeout(() => { w.print(); }, 300);
+    }
+
+    function downloadCVImage() {
+        const cvEl = document.getElementById("cvToPrint");
+        if (!cvEl) {
+            alert("Generate your CV first");
+            return;
+        }
+        // Turn CV paper into a picture
+        html2canvas(cvEl, { scale: 2, backgroundColor: "#ffffff", useCORS: true }).then(canvas => {
+            const link = document.createElement("a");
+            link.download = "My-CV.png";
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+            alert("CV Picture Saved! Check Gallery > Downloads > My-CV.png");
+        }).catch(() => {
+            alert("Could not save picture, try PDF instead");
+        });
     }
 
     loadPosts("schoolNews", 1, true);
