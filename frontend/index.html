@@ -29,7 +29,7 @@
         .welcome h2 { margin: 0 0 6px; color: #fff; font-size: 21px; }
         .welcome p { margin: 0; color: #eafff1; font-size: 15px; font-weight: 500; }
         .tools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 14px 0; }
-        .tool { background: #f7fdf9; border: 1px solid #e6f3ea; border-radius: 14px; padding: 14px 8px; text-align: center; font-weight: 700; font-size: 15px; cursor: pointer; line-height: 1.4; }
+        .tool { background: #f7fdf9; border: 1px solid #e6f3ea; border-radius: 14px; padding: 14px 8px; text-align: center; font-weight: 700; font-size: 16px; cursor: pointer; line-height: 1.4; }
         .tool small { display: block; color: #444; font-weight: 500; font-size: 13px; margin-top: 4px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
         .card { border: 1px solid #eee; border-radius: 16px; overflow: hidden; background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,.05); }
@@ -81,7 +81,7 @@
             .welcome h2 { font-size: 19px; }
             .welcome p { font-size: 14px; }
             .tools { grid-template-columns: repeat(2, 1fr); gap: 9px; }
-            .tool { font-size: 14px; padding: 12px 6px; }
+            .tool { font-size: 15px; padding: 12px 6px; font-weight: 700;}
             .tool small { font-size: 12px; }
             .grid { grid-template-columns: 1fr; gap: 12px; }
             .card img { height: 180px; }
@@ -161,13 +161,13 @@
             </select>
             <input id="title" placeholder="Title of News">
             <input id="img" type="file" accept="image/*">
-            <textarea id="content" rows="8" placeholder="Write news here... If you type a link like https://wa.me/234... it will become clickable automatically." oninput="autoGrow(this)"></textarea>
+            <textarea id="content" rows="8" placeholder="Write news here... " oninput="autoGrow(this)"></textarea>
             <input id="link" placeholder="Button Link - e.g. https://wa.me/234... or personal page link (optional)">
             <button class="loadmore" style="width:100%" onclick="publish()">Publish Post</button>
             <p id="msg"></p>
             <hr>
             <h3>Delete Post</h3>
-            <p style="color:#333;font-size:15px">You are logged in as Admin. Go to School News or News page, you will see a Delete button under each post. Click Delete only on the particular post you want to delete. Visitors will NOT see any Delete button.</p>
+            <p style="color:#333;font-size:15px"> </p>
             <button onclick="showPage('school')" style="background:#0a7a3b;color:#fff;border:0;padding:12px 20px;border-radius:999px;cursor:pointer;font-weight:800;font-size:14px">Go To School News To Delete</button>
             <br><br>
             <button onclick="logoutManager()" style="background:#fff;border:1px solid #ddd;padding:12px 20px;border-radius:999px;cursor:pointer;font-weight:800;font-size:14px">Logout Admin</button>
@@ -340,7 +340,7 @@
                         ${content.length > 350 ? `<span class="read" onclick="this.previousElementSibling.style.display='block';this.previousElementSibling.previousElementSibling.style.display='none';this.style.display='none'">Read More ↓</span>` : ""}
                         ${p.externalLink ? `<a class="visit" href="${p.externalLink}" target="_blank">Visit Page / Chat on WhatsApp ↗</a>` : ""}
                         <button class="share" onclick="sharePost('${p.title.replace(/'/g, "")}')">📤 Share This News on WhatsApp</button>
-                        ${isAdmin() ? `<button class="del" onclick="deletePost('${p._id}', '${p.title.replace(/'/g, "")}')">🗑 Delete This Post Only</button>` : ""}
+                        ${isAdmin() ? `<button class="del" onclick="deletePost('${p._id}', '${p.title.replace(/'/g, "")}')">🗑 Delete This Post </button>` : ""}
                     </div>
                 `;
                 grid.appendChild(div);
@@ -355,7 +355,7 @@
             alert("Only Admin can delete");
             return;
         }
-        if (!confirm("Delete this post only?\n\n" + title + "\n\nThis will delete it from website AND picture from Cloudflare.")) {
+        if (!confirm("Delete this post only?\n\n" + title + "\n\nThis will delete this post permannently")) {
             return;
         }
         const pass = document.getElementById("pass").value;
