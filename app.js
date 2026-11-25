@@ -5,16 +5,28 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import { fileURLToPath } from 'url'
 import multer from "multer";
+ import path from 'path'
 import bordyparser from 'body-parser'
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+ const __filename = fileURLToPath(import.meta.url)
+ const __dirname = path.dirname(__filename)
 
 dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(bordyparser.json());
-app.use(express.static("public"));
+
+app.use(express.static(path.join(__dirname, 'frontend')))
+
+   app.use((req, res, next) => { console.log(` ${req.method} ${req.url}`); next(); })
+
+   app.get('/', (req, res) => {
+     res.sendFile(path.join(__dirname, 'frontend', 'index.html')); 
+  })
+
 
 // Connect to MongoDB - where post titles and text are saved
 mongoose.connect(process.env.MONGO_URI);
